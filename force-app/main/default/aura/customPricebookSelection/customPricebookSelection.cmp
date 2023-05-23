@@ -1,0 +1,20 @@
+<aura:component controller="RateInputProcessController" >
+
+    <aura:attribute name="pricebooks" type="List" />
+    <aura:attribute name="selectedValue" type="String" />
+    <aura:attribute name="recordTypeName" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div class="slds-size_8-of-12" style="text-align: center; margin: 30px auto;">
+        <p>Select a Price Book to associate with this opportunity. You can add products only from the Price Book you associate with this opportunity. 
+            Changing the Price Book deletes all products from the opportunity.</p>
+            <lightning:select name="select" label="Price Book" required="true" value="{!v.selectedValue}" >
+                <aura:iteration items="{!v.pricebooks}" var="prb" >
+                    <option text="{!prb.Name}" value="{!prb.Id}" selected="{!prb.Id == v.selectedValue}"></option>
+                </aura:iteration>
+            </lightning:select>
+    </div>
+
+
+</aura:component>

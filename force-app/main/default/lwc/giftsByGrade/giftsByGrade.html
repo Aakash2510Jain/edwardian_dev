@@ -1,0 +1,30 @@
+<template>
+    <lightning-accordion allow-multiple-sections-open>
+        <lightning-accordion-section name="gradeName" label={gradeName}>
+            <div class="slds-grid slds-wrap slds-var-p-vertical_xxx-small headingText">
+                <div class="slds-col slds-size_6-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                    {label.nameHeading}
+                </div>
+                <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                    {label.priceHeading}
+                </div>
+                <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-text-align_center">
+                    {label.quantityHeading}
+                </div>
+                <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-text-align_center">
+                    {label.vipGiftAllocation_alwaysAllocateHeading}
+                </div>
+                <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-text-align_center">
+                    {label.vipGiftAllocation_addHeading}
+                </div>
+            </div>
+            <template for:each={gifts} for:item="gift">
+                <c-gift-detail
+                    key={gift.Id}
+                    gift={gift}
+                    onselectedgift={addGift}
+                ></c-gift-detail>
+            </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+</template>

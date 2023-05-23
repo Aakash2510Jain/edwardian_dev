@@ -1,0 +1,24 @@
+<template>
+    <div class="slds-grid slds-wrap slds-var-p-vertical_xxx-small onHover">
+        <div class="slds-col slds-size_6-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+            {gift.Name}
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+            <lightning-input type="number" name="giftPrice" value={gift.Price__c} formatter="currency" variant="label-hidden" readonly></lightning-input>
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_large slds-align-content-center">
+            <lightning-input type="number" name="quantity" value={quantity} onchange={changeQuantity} variant="label-hidden" min="1" max="9999" required></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-align_absolute-center">
+            <lightning-input type="checkbox" name="alwaysAllocate" value={alwaysAllocate} onchange={changeAlwaysAllocate} variant="label-hidden" class="slds-var-m-left_xx-small"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-align_absolute-center">
+            <div class="slds-hint-parent">
+                <button class="slds-button slds-button_icon" onclick={addGift} title="Add">
+                    <lightning-icon icon-name="standard:task2" size="small" alternative-text="Add" ></lightning-icon>
+                    <span class="slds-assistive-text">{label.addButton}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,309 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" controller="EdwardianBookingForm" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="BookingRec" type="nihrm__BookingContact__c"  />
+    
+        <aura:attribute name="isDisabled" type="Boolean" default="false"/>
+   
+   <aura:attribute name="selectedCoffeeValue" type="string" />
+    <aura:attribute name="Coffeeoptions" type="List" default="[
+                                                              {'label': 'True', 'value': 'True'},
+                                                              {'label': 'False', 'value': 'False'}
+                                                              ]"/>
+    <aura:attribute name="selectedDrinksValue" type="String"  />
+    <aura:attribute name="DrinksOptions" type="List" default="[
+                                                              {'label': 'True', 'value': 'True'},
+                                                              {'label': 'False', 'value': 'False'}
+                                                              ]"/>
+    <aura:attribute name="selectedLaptopvalue" type="String"  />
+    <aura:attribute name="LaptopOptions" type="List" default="[
+                                                              {'label': 'True', 'value': 'True'},
+                                                              {'label': 'False', 'value': 'False'}
+                                                              ]"/>
+    
+ 
+    <lightning:layout class="abc" horizontalAlign="center">
+        <lightning:layoutItem class="e" size="12" padding="around-large">
+            <div class="slds-align_absolute-center"><img src="{!$Resource.EdwardianLogo}"/></div>
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+    <lightning:layout class="abc" horizontalAlign="center">
+        <lightning:layoutItem class="e" size="3" padding="around-large">
+        </lightning:layoutItem>
+        <lightning:layoutItem class="e" size="6" padding="around-large">
+            <div class="slds-align_absolute-center">
+                <b style="font-size:230%;">Please Fill in this Form</b> 
+            </div>
+            <div class="slds-align_absolute-center">
+                
+                <h2>Block Code: BookingRef</h2>
+            </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem class="e" size="3" padding="around-large">
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+    
+    
+    <lightning:layout class="abc" >
+        <lightning:layoutItem class="e" size="12" padding="around-small">
+            <div class="slds-text-align_left">
+                <b style="font-size:260%;">Event Planning Questionnaire</b>
+            </div>
+            <hr/>
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-text-align_left">
+                    <b>*Indicates Required Fields</b>
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    <h1><b>Contact</b></h1>
+                    <p>Who will be the main contact on the day</p>
+                </div>
+            </lightning:layoutItem>
+            
+            
+            
+            <lightning:layout class="abc" >
+                <lightning:layoutItem class="e" size="6" padding="around-large">
+                    <div class="slds-align_absolute-left" >
+                        <lightning:input   type="text" value="{!v.BookingRec.nihrm__BookingContact__r.Name}" disabled="{!v.isDisabled}" label ="Name"  /></div>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="e" size="6" padding="around-large">
+                    <div class="slds-align_absolute-left">
+                        <lightning:input   type="text" value="{!v.BookingRec.nihrm__BookingContact__r.Phone}" disabled="{!v.isDisabled}" label ="Mobile"/></div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    <h1><b>Electronic Signage</b></h1><br/>
+                    <p>In the lobby and outside the room – text or company logo in 16:9 format</p>
+                </div>   
+            </lightning:layoutItem>
+            
+            
+            
+            <lightning:layout class="abc" horizontalAlign="center">
+                <lightning:layoutItem class="e" size="6" padding="around-large">
+                    <div class="slds-align_absolute-left" >
+                        <lightning:textarea
+                                            value="{!v.BookingRec.Signage_Text__c}"
+                                            label="Signage Text"
+                                            max-length="300"
+                                            >
+                        </lightning:textarea>            </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="e" size="6" padding="around-large">
+                    <div class="slds-align_absolute-left">
+                        <lightning:fileUpload label="Signage Logo"
+                                              name="fileUploader"
+                                              multiple="true"
+                                              accept="{!v.filetype}"
+                                              recordId="{!v.recordId}"
+                                              onuploadfinished="{!c.handleUploadFinished}" />
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+            
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    <h1><b>Attendees</b></h1><br/>
+                    <p>Final chargeable number of guests, required 10 working days before the event.</p>
+                </div>   
+            </lightning:layoutItem>
+            
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left" >
+                    <lightning:input   type="text" value="{!v.BookingRec.Number_Of_Guests__c}" label ="Number of Guests" /></div>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    <h1><b>Catering</b></h1><br/>
+                    <p>Final chargeable number of guests, required 10 working days before the event.</p>
+                </div>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    <h1><b>DRINKS</b></h1>
+                    <p> </p>
+                    <div class="slds-grid slds-wrap"  >
+                        <div class="slds-col slds-align_absolute-left slds-size_12-of-12"> 
+                        
+                        </div>  
+                         <div class="slds-col slds-align_absolute-left slds-size_12-of-12">
+                        		<lightning:radioGroup name="radioGroup1"
+                                                      label="Coffee / Tea"
+                                                      options="{! v.Coffeeoptions }"
+                                                      value="{!v.selectedCoffeeValue}"
+                                                        type="radio"/>
+                         </div>
+                     </div>
+                </div><br/>
+                Tea and coffee are not included in lunch. Would you like to include some?
+            </lightning:layoutItem>
+            
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                       <p></p>
+                    <div class="slds-grid slds-wrap"  >
+                        <div class="slds-col slds-align_absolute-left slds-size_12-of-12"> 
+                            <lightning:radioGroup name="radioGroup2"
+                                                      label="Soft Drinks"
+                                                      options="{! v.DrinksOptions }"
+                                                      value="{!v.selectedDrinksValue}"
+                                                       type="radio"/>
+                        </div>
+                         
+                    </div>
+                </div><br/>
+                Soft drinks are not included in the lunch. Would you like to include some?
+            </lightning:layoutItem>
+            
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left" >
+                    <lightning:input   type="text" value="" label ="Dietary Requirements"/></div>
+                Please provide at least 10 working days prior to your event <br/><br/><br/>
+                <div class="slds-align_absolute-left">
+                    <h1><b>Timing</b></h1><br/>
+                    <p>Please confirm all timings</p>
+                </div>
+            </lightning:layoutItem>
+            
+            
+            <lightning:layout class="abc" >
+                <lightning:layoutItem class="e" size="4" padding="around-large">
+                    <div class="slds-align_absolute-left" >
+                        <lightning:input   type="time" value="{!v.BookingRec.Access_For_Setup__c}" label ="Access For Setup"  /></div>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="e" size="4" padding="around-large">
+                    <div class="slds-align_absolute-left">
+                        <lightning:input   type="time" value="{!v.BookingRec.Arrival__c}" aura:id="timeInput" onchange="{!c.TimeOnchanage}" label ="Arrival"/></div>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="e" size="4" padding="around-large">
+                    <div class="slds-align_absolute-left">
+                        <lightning:input   type="time" value="{!v.BookingRec.Breaks__c}" aura:id="timeInput" label ="Breaks"/></div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+            
+            <lightning:layout class="abc" >
+                <lightning:layoutItem class="e" size="4" padding="around-large">
+                    <div class="slds-align_absolute-left" >
+                        <lightning:input   type="time" value="{!v.BookingRec.Lunch__c}" label ="Lunch"  /></div>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="e" size="4" padding="around-large">
+                    <div class="slds-align_absolute-left">
+                        <lightning:input   type="time" value="{!v.BookingRec.Finish__c}" label ="Finish"/></div>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="e" size="4" padding="around-large">
+                    <div class="slds-align_absolute-left">
+                        <lightning:input   type="time " value="{!v.BookingRec.Other__c}" label ="Other"/></div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    <h1><b>Registration Desk</b></h1><br/>
+                    <p>Leave blank if not needed</p>
+                </div>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left" >
+                    <lightning:input   type="text" value="{!v.BookingRec.Location__c}" label ="Location" /></div>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    <h1><b>Audio-Visual Equipment</b></h1><br/>
+                    <p>Leave blank if nothing more is needed</p>
+                </div>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left" >
+                    <lightning:input   type="text" value="{!v.BookingRec.Equipment__c}" label ="Equipment" /></div>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    <b>Laptop</b><br/><br/><br/> 
+                    <h1><b>Additional cost applies.</b></h1><br/>
+                    <p>Please note, we provide HDMI and VGA cables to plug into your laptop. If you are using a Mac, you will need to bring an adapter.</p>
+                </div>
+            </lightning:layoutItem>
+            
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left">
+                    
+                    <p></p>
+                    <div class="slds-grid slds-wrap"  >
+                        <div class="slds-col slds-align_absolute-left slds-size_12-of-12"> 
+                            <lightning:radioGroup name="radioGroup2"
+                                                      label="Laptop Hire"
+                                                      options="{! v.LaptopOptions }"
+                                                      value="{!v.selectedLaptopvalue}"
+                                                       type="radio"/>
+                         </div>  
+                    </div>
+                </div><br/>
+                <b>Set Up</b><br/><br/>
+                <p>i.e. Cabaret Style with 8 guests per table, etc.</p>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left" >
+                    <b><lightning:input   type="text" value="{!v.BookingRec.Special_Requirement_Comments__c}" label =" Please Specify" /></b> 
+                </div><br/>
+                <b>Special Requirements</b><br/><br/>
+                <p>Accessibility requirements, mobility concerns or any guests requiring special assistance?</p>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left" >
+                    <b><lightning:input   type="text" value="{!v.BookingRec.Set_up_Comments__c}" label =" Please Specify" /></b> 
+                </div><br/>
+                <b>Event</b><br/><br/>
+                <p>Name and purpose of the event, i.e. team building, presentation, interviews etc.</p>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem class="e" size="12" padding="around-large">
+                <div class="slds-align_absolute-left" >
+                    <b><lightning:input   type="text" value="{!v.BookingRec.Name__c}" label ="Name" /></b> 
+                </div><br/>
+                <div class="slds-align_absolute-left" >
+                    <b><lightning:input   type="text" value="{!v.BookingRec.Purpose__c}" label ="Purpose" /></b> 
+                </div><br/>
+                <b>Deliveries</b><br/><br/>
+                <p>Please confirm how many boxes/items will be sent</p><br/>
+                <div class="slds-align_absolute-left" >
+                    <b><lightning:input   type="text" value="{!v.BookingRec.Deliveries_Comments__c}" label ="Please Specify" /></b> 
+                </div><br/>
+                <b>Note</b><br/><br/>
+                <p>Please confirm the number of packages or items that will be dispatched. Kindly note that the hotel staff cannot assist with the transportation of any bulky or heavy items to the event room. It<br/>
+                    is the responsibility of the sender to make arrangements with their courier or delivery company for such items. Deliveries should be scheduled to arrive no earlier than 48 hours prior to the<br/>
+                    event and collected no later than 48 hours after the event.</p><br/><br/>
+                <b><lightning:button variant="brand" label="Submit" title="Begins the task" onclick="{!c.updateBookDetails}">
+                    </lightning:button></b>  
+                
+            </lightning:layoutItem>
+            
+        </lightning:layoutItem>
+        
+    </lightning:layout>
+    
+    
+</aura:component>

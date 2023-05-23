@@ -1,0 +1,17 @@
+<apex:page showHeader="false" sidebar="false">
+    <apex:includeLightning /> 
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    <div id="LightningComponentid" />    
+    <script>
+    debugger;
+    $Lightning.use("c:Edwardian_Hotel_Booking_Form_App", function() {
+        $Lightning.createComponent("c:Edwardian_Hotel_Booking_Form",
+          { recordId: '{!$CurrentPage.parameters.id}'
+          },
+          "LightningComponentid",
+          function(cmp) {
+             console.log('Aura Componenet added in VF page');
+          });
+    });
+    </script>
+</apex:page>

@@ -1,0 +1,16 @@
+<apex:page showHeader="false" sidebar="false">
+    <apex:includeLightning /> 
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    <div id="LightningComponentid" />    
+    <script>
+    debugger;
+    $Lightning.use("c:BigObjectDatatableApp", function() {
+        $Lightning.createComponent("c:BigObjectDatatable",
+          { accountId: '{!$CurrentPage.parameters.id}'},
+          "LightningComponentid",
+          function(component) {
+             console.log('LWC Componenet added in VF page');
+          });
+    });
+    </script>
+</apex:page>

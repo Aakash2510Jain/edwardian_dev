@@ -1,0 +1,114 @@
+<aura:component controller="RateInputProcessController">
+
+    <aura:attribute name="allProducts" type="List" />
+    <aura:attribute name="productsForDisplay" type="List" />
+    <aura:attribute name="productColumns" type="List" />
+    <aura:attribute name="selectedPricebookId" type="String" />
+    <aura:attribute name="selectedProducts" type="List" />
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0" />
+    <aura:attribute name="showSelectedVisible" type="Boolean" default="true" />
+    <aura:attribute name="isShowFilter" type="Boolean" default="false" />
+    <aura:attribute name="isCheckedSelectAll" type="Boolean" default="false" />
+    
+    <aura:attribute name="optionsFamily" type="List" />
+    <aura:attribute name="valueFamily" type="List" />
+    <aura:attribute name="opportunity" type="Opportunity" />
+    <aura:attribute name="listExistingId" type="List" />
+
+    <aura:attribute name="sortDirection" type="String" default="asc" />
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="searchValue" type="String" default="" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div class="slds-grid">
+        <div class="slds-col" style="width: 94%;">
+            <lightning:input aura:id="enter-search" name="enter-search" type="search" placeholder="Search products..."
+                onchange="{!c.searchProducts}" value="{!v.searchValue}" class="slds-m-vertical_medium"
+                variant="label-hidden" />
+        </div>
+        <div class="slds-col slds-col_bump-left" style="width: 6%; ">
+          <aura:if isTrue="{!v.isShowFilter}">
+            <lightning:buttonIcon class="slds-m-vertical_medium filterIcon" iconName="utility:filterList"
+            variant="brand" disabled="false" alternativeText="Show filters" title="Show filters"
+            onclick="{!c.showFilters}" />
+            <aura:set attribute="else">
+              <lightning:buttonIcon class="slds-m-vertical_medium filterIcon" iconName="utility:filterList"
+              variant="neutral" disabled="false" alternativeText="Show filters" title="Show filters"
+              onclick="{!c.showFilters}" />
+            </aura:set>
+          </aura:if>
+
+        </div>
+    </div>
+
+    <div style="height: 410px">
+        <aura:if isTrue="{!v.showSelectedVisible}">
+            <h1><a onclick="{!c.showSelectedRows}" disabled="{!v.selectedRowsCount eq 0}">Show selected rows ({! v.selectedRowsCount })</a></h1>
+            <aura:set attribute="else">
+                <h1><a onclick="{!c.showAllRows}">Show all rows </a></h1>
+            </aura:set>
+        </aura:if>
+
+        <div class="slds-grid" style="height: 94%;">
+            <div class="{!v.isShowFilter ? 'slds-col slds-size_9-of-12' : 'slds-col slds-size_1-of-1'}" style="overflow: auto;">
+                <table class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols">
+                    <thead>
+                      <tr class="slds-text-title--caps">
+                        <th class="" scope="col" onclick="{!c.handleSort}" name="checkall" style="width:3.25rem; padding: 4px 8px;">
+                            <lightning:input type="checkbox" variant="label-hidden" name="" onchange="{!c.selectAll}" checked="{!v.isCheckedSelectAll}"/>
+                        </th>  
+                        <aura:iteration items="{! v.productColumns }" var="column">
+                          <th class="slds-is-sortable slds-is-resizable slds-text-title--caps" scope="col" onclick="{!c.handleSort}" data-field="{!column.fieldName}" name="{!column.fieldName}" style="{!column.style}">
+                          <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset" >
+                              <span class="slds-assistive-text">Sort</span>
+                            <span class="slds-truncate" title="Name">{!column.label}</span>  
+                              <aura:if isTrue="{!column.arrowDirection == 'arrowdown' }">&nbsp;  &#9660; </aura:if>  
+                              <aura:if isTrue="{!column.arrowDirection != 'arrowdown'}"> &nbsp;  &#9650; </aura:if>                        
+                          </a>
+                         </th>
+                        </aura:iteration>  
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <aura:iteration items="{!v.productsForDisplay}" var="prod">  
+                      <tr>
+                        <th scope="row">
+                            <lightning:input type="checkbox" variant="label-hidden" name="" checked="{!prod.isSelected}" onchange="{!c.updateSelectedText}"/>
+                        </th>
+                        <th scope="row">
+                          <div class="slds-truncate" title="{!prod.prodName}">{!prod.prodName}</div>
+                        </th>
+                        <th scope="row">
+                          <div class="slds-truncate" title="{!prod.ProductCode}">{!prod.ProductCode}</div>
+                        </th>
+                         <th scope="row">
+                          <div class="slds-truncate" title="{!prod.UnitPrice}">
+                            <lightning:formattedNumber value="{!prod.UnitPrice}" style="currency" currencyCode="GBP"/></div>
+                        </th>
+                        <th scope="row">
+                          <div class="slds-truncate" title="{!prod.UnitPrice}">
+                            <lightning:formattedNumber value="{!prod.X2_Adult_List_Price__c}" style="currency" currencyCode="GBP"/></div>
+                        </th>
+                          
+                         <th scope="row">
+                          <div class="slds-truncate" title="{!prod.prodDesc}">{!prod.prodDesc}</div>
+                        </th> 
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!prod.prodFamily}">{!prod.prodFamily}</div>
+                        </th> 
+                      </tr>
+                      </aura:iteration>
+                    </tbody>
+                  </table> 
+
+            </div>
+            <div class="{!v.isShowFilter ? 'slds-col slds-size_3-of-12 filterArea slds-scrollable_y' : 'displayNone'}" style="padding-left: 15px;">
+                <p style="font-size: 14pt;">Select product family</p>
+                <lightning:checkboxGroup name="filtersFamily" label="Select product family" options="{! v.optionsFamily }" value="{! v.valueFamily }" />
+                <lightning:button variant="Brand" class="slds-button slds-m-vertical_medium" label="Apply filters" onclick="{!c.applyFilters}" />
+            </div>
+        </div>
+    </div>
+
+</aura:component>

@@ -1,0 +1,22 @@
+<template>
+    <div class="slds-grid slds-wrap slds-var-p-vertical_xxx-small slds-var-p-horizontal_small onHover">
+        <div class="slds-col slds-size_6-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+            {selectedAlwaysAllocatedGift.gift.Name}
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-text-align_right">
+            <lightning-input type="number" name="giftPrice" value={selectedAlwaysAllocatedGift.gift.Price__c} formatter="currency" variant="label-hidden" disabled="true" readonly></lightning-input>
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_large slds-align-content-center">
+            <lightning-input type="number" name="quantity" value={selectedAlwaysAllocatedGift.quantity} onchange={changeQuantity} variant="label-hidden" min="1" max="9999"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-12"></div>
+        <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-align_absolute-center">
+            <div class="slds-hint-parent">
+                <button class="slds-button slds-button_icon" onclick={removeAlwaysAllocatedGift} title="Remove">
+                    <lightning-icon icon-name="standard:first_non_empty" size="small" alternative-text="Remove" ></lightning-icon>
+                    <span class="slds-assistive-text">{label.removeButton}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</template>

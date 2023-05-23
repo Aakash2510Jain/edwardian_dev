@@ -1,0 +1,37 @@
+<template>
+    <div class="slds-border_left slds-border_bottom slds-border_top slds-border_right slds-p-top_x-small slds-p-bottom_x-small slds-m-top_x-small">
+        <div class="slds-grid slds-wrap slds-var-p-vertical_xxx-small slds-var-p-horizontal_small onHover">
+            <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                {existingGiftAllocation.Name}
+            </div>
+            <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                {existingGiftAllocation.Gift_Delivery_Status__c}
+            </div>
+            <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                {existingGiftAllocation.Delivery_Date__c}
+            </div>
+            <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                {existingGiftAllocation.Items_Count__c}
+            </div>
+            <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                <lightning-input type="number" name="giftPrice" value={existingGiftAllocation.Total_Price__c} formatter="currency" variant="label-hidden" disabled="true" readonly></lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-float_right slds-align_absolute-center">
+                <button class="slds-button slds-button_brand" onclick={editGiftAllocation} title="Edit">{label.editButton}</button>
+            </div>
+            <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-float_right slds-align_absolute-center">
+                <button class="slds-button slds-button_icon" onclick={removeGiftAllocation} title="Remove">
+                    <lightning-icon icon-name="standard:first_non_empty" size="small" alternative-text="Remove" ></lightning-icon>
+                    <span class="slds-assistive-text">{label.removeButton}</span>
+                </button>
+            </div>
+        </div>
+
+        <template for:each={existingGiftAllocation.Gift_Allocation_Line_Items__r} for:item="existingGiftAllocationLineItem">
+            <c-existing-gift-allocation-line-item
+                key={existingGiftAllocationLineItem.Id}
+                existing-gift-allocation-line-item={existingGiftAllocationLineItem}
+            ></c-existing-gift-allocation-line-item>
+        </template>
+</div>
+</template>

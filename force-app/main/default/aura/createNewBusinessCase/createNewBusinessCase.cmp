@@ -1,0 +1,7 @@
+<aura:component controller="CreateNewBusinessCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="pageReference" type="Object"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <lightning:navigation aura:id="navService"/>
+    <lightning:pageReferenceUtils aura:id="pageRefUtils"/>
+</aura:component>

@@ -1,0 +1,92 @@
+<!-- /**
+ * @author [Dinesh B]
+ * @email dinesh.b@utilitarianLab.com
+ * @create date 2023-04-17 13:26:21
+ * @modify date 2023-04-17 13:26:21
+ * @desc [description]
+ */ -->
+
+<aura:component controller="BigObjectAuraHelper" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="bigobjectList" type="List"/>
+    <aura:attribute name="ShowViewAll" type="Boolean" default="false"/>
+    
+    <div class="slds-p-around_medium " style="border: 1px solid;">
+        <lightning:card title="Archived Individual" iconName="standard:contact">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered" >
+                <thead>
+                    <tr class="slds-line-height_reset slds-text-title_caps">
+                        <th  class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Name">
+                                Created Date
+                            </div>
+                        </th>
+                        <th  class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Contact Id">
+                                Email
+                            </div>
+                        </th>
+                        <th  class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Contact CurrentTime">
+                                From Address
+                            </div>
+                        </th>
+                        <th  class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Contact CurrentTime">
+                                Email Name
+                            </div>
+                        </th>
+                        <th  class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Contact CurrentTime">
+                                Subject Line
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                
+                
+                <tbody>
+                    <aura:iteration items="{!v.bigobjectList}" var = "con">
+                        <tr class="slds-hint-parent">
+                            <th data-label="Name" scope="row">
+                                <div class="slds-truncate" title="{!con.Created_Date__c}">
+                                    {!con.Created_Date_Time__c}
+                                </div>
+                            </th>
+                            <th data-label="Contact Id" scope="row">
+                                <div class="slds-truncate" title="{!con.Email__c}">
+                                    {!con.Email__c}
+                                </div>
+                            </th>
+                            <th data-label="Contact CurrentTime" scope="row">
+                                <div class="slds-truncate" title="{!con.From_Address__c}">
+                                    {!con.From_Address__c}
+                                </div>
+                            </th>
+                            <th data-label="Contact CurrentTime" scope="row">
+                                <div class="slds-truncate" title="{!con.Email_Name__c}">
+                                    {!con.Email_Name__c}
+                                </div>
+                            </th>
+                            <th data-label="Contact CurrentTime" scope="row">
+                                <div class="slds-truncate" title="{!con.Subject_Line__c}">
+                                    {!con.Subject_Line__c}
+                                </div>
+                            </th>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+                
+            </table>
+            <br/>
+            <aura:if isTrue="{!v.ShowViewAll}">
+                <div class="slds-align_absolute-center" style="height:3rem">
+                    <lightning:button label="View All" onclick="{!c.viewAll}" />
+                </div>
+            </aura:if>
+            
+            
+        </lightning:card>
+    </div>
+    
+</aura:component>

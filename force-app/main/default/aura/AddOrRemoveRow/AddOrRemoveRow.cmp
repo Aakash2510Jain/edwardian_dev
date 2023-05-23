@@ -1,0 +1,215 @@
+<aura:component controller="AddorRemoveRowController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+    
+    <aura:html tag="style">
+        .slds-modal__container{
+        max-width: 90rem !important;
+        width:175% !important;
+        }
+    </aura:html>
+    
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+    </aura:html>
+    
+    <aura:attribute name="grpserieslist" type="Group_Series_Rates__c[]"/> 
+    <aura:attribute name="delgrpserieslist" type="String[]"/> 
+    <aura:attribute name="propertyRec" type="Property_Standard_Price__c"/> 
+    <aura:attribute name="propertyRecActual" type="Property_Standard_Price__c"/> 
+    <aura:handler   name="init" value="{!this}" action="{!c.fetchgrpSeriesRates}"/>
+    <aura:attribute name="showInput" type="boolean" default="false"/>
+    <aura:attribute name="showError" type="Boolean" default="false"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="hotelName" type="String" />
+    <aura:attribute name="dynamicSaveLabel" type="String" />
+    <aura:handler   event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler   event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="spinner" type="boolean" default="FALSE"/>
+    
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading..</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showError}">
+        <div class="exampleHolder">
+            <lightning:spinner alternativeText="Loading" size="small" />
+        </div>
+    </aura:if>
+    
+    <div class="slds-grid slds-gutters" style="margin-right:5%">
+        <div class="slds-col">
+            <span>
+                
+            </span>
+        </div>
+        <div class="slds-col">
+            <span>
+                <lightning:input name="gsrStdPriceSingle" required="{!v.showInput}" type="Currency" maxlength="50" label="Standard Price For Double/Twin – Single Occupancy" value="{!v.propertyRecActual.Standard_Price_For_Double_Twin_Single__c}" onchange="{!c.handleChange}"/>
+            </span>
+        </div>
+        <div class="slds-col">
+            <span>
+                <lightning:input name="gsrStdPriceDouble" required="{!v.showInput}" type="Currency" maxlength="50" label="Standard Price For Double/Twin – Double Occupancy" value="{!v.propertyRecActual.Standard_Price_For_Double_Twin_Double__c}" onchange="{!c.handleChange}"/>
+            </span>
+        </div>
+        <div class="slds-col">
+            <span>
+                <lightning:input name="gsrStdPriceTriple2" required="{!v.showInput}" type="Currency" maxlength="50" label="Standard Price For Triple Room – 2 Adults + 1 Child (0-12 yrs)" value="{!v.propertyRecActual.Standard_Price_For_Triple_Room_2_Adult__c}" onchange="{!c.handleChange}"/>
+            </span>
+        </div>
+        <div class="slds-col">
+            <span>
+                <lightning:input name="gsrStdPriceTriple3" required="{!v.showInput}" type="Currency" maxlength="50" label="Standard Price For Triple Room – 3 Adults" value="{!v.propertyRecActual.Standard_Price_For_Triple_Room_3_Adults__c}" onchange="{!c.handleChange}"/>
+            </span>
+        </div>
+    </div>
+    
+    <div class="slds-m-around_x-small slds-modal_large slds-scrollable_x" style="z-index: 1; padding-bottom: 25px;">
+        <div class="slds-m-around_x-small slds-modal_large slds-scrollable_y" style="z-index: 1; padding-bottom: 25px;">
+        <div class="container-fluid" style="margin: 1%;outline-style: solid;">        
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <th scope="col">
+                            <div class="slds-truncate">S.no</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate slds-cell-wrap" title="Tour Code">
+                                <abbr title="required" class="slds-required">*</abbr>Tour <br/>Code
+                            </div>                           
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Date From">
+                                <abbr title="required" class="slds-required">*</abbr>Date From
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Date To">
+                                <abbr title="required" class="slds-required">*</abbr>Date To</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Rooms">
+                                <abbr title="required" class="slds-required">*</abbr>Rooms</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Room Type">
+                                <abbr title="required" class="slds-required">*</abbr>Room Type</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Is Breakfast Included?">Is Breakfast <br/>Included?</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Overwrite Standard Price">Overwrite <br/>Standard <br/> Price</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Double/Twin – Single Occupancy">Double/Twin– <br/>Single  <br/>Occupancy</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Double/Twin – Double Occupancy">Double/Twin– <br/>Double Occupancy</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Triple Room – 2 Adults + 1 Child (0-12 yrs)">Triple Room–2 <br/>Adults + 1 Child<br/> (0-12 yrs)</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Triple Room – 3 Adults">Triple Room<br/>–3 Adults</div>
+                        </th>
+                    </tr>
+                </thead>   
+                <tbody>      
+                    <aura:iteration items="{!v.grpserieslist}" var="gsr" indexVar="index">
+                        <tr id="{!index}">
+                            <td> 
+                                {!index + 1}
+                            </td>
+                            <td>
+                                <lightning:input name="gsrTourCode" type="text" maxlength="50" value="{!gsr.Tour_Code__c}" />
+                            </td>
+                            <td>
+                                <lightning:input name="gsrDateFrom" type="date"  maxlength="10" value="{!gsr.Date_From__c}" />
+                            </td>
+                            <td>
+                                <lightning:input name="gsrDateTo" type="date" maxlength="10" value="{!gsr.Date_To__c}" />
+                            </td>
+                            <td>
+                                <lightning:input name="gsrRooms" type="number" maxlength="10" value="{!gsr.Rooms__c}" />
+                            </td>
+                            <td>
+                                <lightning:input name="gsrTourCode" type="text" maxlength="255" value="{!gsr.Room_Type__c}" />
+                            </td>
+                            <td >
+                                <lightning:input name="gsrIsBreakfastIncluded" type="checkbox" id="{!index}" checked="{!gsr.Is_Breakfast_Included__c}"  value="{!gsr.Is_Breakfast_Included__c}" />
+                            </td>
+                            <td >
+                                <lightning:input name="gsrOverwriteStandardPrice" type="checkbox" id="{!index}" checked="{!gsr.Overwrite_Standard_Price__c}"  value="{!gsr.Overwrite_Standard_Price__c}" onclick = "{!c.allowInput}"/>
+                            </td>
+                            <td>
+                                <aura:if isTrue="{!gsr.Overwrite_Standard_Price__c}">
+                                    <lightning:input name="gsrDouble/TwinSingleOccupancy"  disabled="false" type="currency"  maxlength="10" value="{!gsr.Double_Twin_Single_Occupancy__c}" />
+                                    <aura:set attribute="else">
+                                        <lightning:input name="gsrDouble/TwinSingleOccupancy"  disabled="true" type="currency"  maxlength="10" value="{!gsr.Double_Twin_Single_Occupancy__c}" />
+                                    </aura:set>
+                                </aura:if> 
+                            </td>
+                            <td>
+                                <aura:if isTrue="{!gsr.Overwrite_Standard_Price__c}">
+                                    <lightning:input name="gsrDouble/TwinDoubleOccupancy"  disabled="false" type="currency"  maxlength="10" value="{!gsr.Double_Twin_Double_Occupancy__c}" />
+                                    <aura:set attribute="else">
+                                        <lightning:input name="gsrDouble/TwinDoubleOccupancy"  disabled="true" type="currency"  maxlength="10" value="{!gsr.Double_Twin_Double_Occupancy__c}" />
+                                    </aura:set>
+                                </aura:if> 
+                            </td>
+                            <td>
+                                <aura:if isTrue="{!gsr.Overwrite_Standard_Price__c}">
+                                    <lightning:input name="gsrTripleRoom2Adults+1Child(0-12yrs)"  disabled="false" type="currency"  maxlength="10" value="{!gsr.Triple_Room_2_Adults_1_Child__c}" />
+                                    <aura:set attribute="else">
+                                        <lightning:input name="gsrTripleRoom2Adults+1Child(0-12yrs)"  disabled="true" type="currency"  maxlength="10" value="{!gsr.Triple_Room_2_Adults_1_Child__c}" />
+                                    </aura:set>
+                                </aura:if> 
+                            </td>
+                            <td>
+                                <aura:if isTrue="{!gsr.Overwrite_Standard_Price__c}">
+                                    <lightning:input name="gsrTripleRoom3Adults"  disabled="false" type="currency"  maxlength="10" value="{!gsr.Triple_Room_3_Adults__c}" />
+                                    <aura:set attribute="else">
+                                        <lightning:input name="gsrTripleRoom3Adults"  disabled="true" type="currency"  maxlength="10" value="{!gsr.Triple_Room_3_Adults__c}" />
+                                    </aura:set>
+                                </aura:if> 
+                            </td>
+                            <td>
+                                <a onclick="{!c.removeRow}" data-record="{!index}" id = "{!gsr.Id}">
+                                    <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                    <span class="slds-assistive-text">Delete</span>
+                                </a>
+                            </td> 
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+            <br/>
+            <div class="slds-clearfix"  style="margin-right: 1%;">
+                <lightning:button variant="neutral" label="Add Row" title="add row" class="slds-float_right" iconName="utility:add" onclick="{!c.addRow}"></lightning:button>
+            </div>
+            <br/>
+        </div>
+        <div class="slds-modal__footer">
+            <lightning:button variant="brand" label="{!v.dynamicSaveLabel}" title="Brand action" onclick="{!c.save}" />
+            <lightning:button class="slds-button slds-button_destructive" variant="brand" label="Cancel" title="Brand action" onclick="{!c.cancelGroupSeriesRates}" />
+        </div>
+    </div>
+    </div>
+    
+</aura:component>

@@ -1,0 +1,89 @@
+<!-- /**
+ * @author [Dinesh B]
+ * @email dinesh.b@utilitarianLab.com
+ * @create date 2023-04-17 13:26:58
+ * @modify date 2023-04-17 13:26:58
+ * @desc [description]
+ */ -->
+
+<aura:component controller="BigObjectAuraHelper" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="accountId" type="String"/>
+    
+    <aura:attribute name="listOfAccounts" type="list"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="paginationList" type="list"/>
+    
+     <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="20"/>
+    <aura:attribute name="totalPages" type="Integer" default="0"/>
+    <aura:attribute name="pageList" type="List"/>
+    <aura:attribute name="totalRecords" type="Integer" />
+    <aura:attribute name="currentPageRecords" type="Integer" />
+    <!-- sorting data variables -->
+
+    <aura:attribute name="sortedBy" type="String" default="Name"/>
+    <aura:attribute name="sortedDirection" type="string" default="asc" />
+    
+    
+    <!--div class="slds-p-around_small">
+        <lightning:datatable
+                             keyField="id" 
+                             data="{! v.listOfAccounts }"
+                             hideCheckboxColumn="false"
+                             columns="{! v.columns }"/>
+    </div-->
+    
+   
+     
+    <div class="slds-p-around_small">
+        <p class="slds-var-p-around_small" style="border: 1px solid;">
+            <lightning:layout multipleRows="true" horizontalAlign="center" >
+                <lightning:layoutItem padding="around-small" size="12">
+                    <lightning:datatable keyField="id" data="{!v.paginationList}"
+                                         columns="{!v.columns}"
+                                         hideCheckboxColumn="true"
+                                         onsort="{!c.updateSorting}"
+                                         sortedBy="{!v.sortedBy}"
+                                         sortedDirection="{!v.sortedDirection}"  />
+                </lightning:layoutItem>
+                 
+                <!--  Pagination Buttons Start -->
+                <div class="slds-align_absolute-center"> 
+                    <lightning:button label="First"
+                                      iconName="utility:left"
+                                      iconPosition="left"
+                                      onclick="{!c.onFirst}"
+                                      disabled="{! v.currentPageNumber == 1}" />
+                    <lightning:button label="Previous"
+                                      disabled="{!v.currentPageNumber == 1}" 
+                                      onclick="{!c.handlePrevious}"
+                                      variant="brand"
+                                      iconName="utility:back"
+                                      name="previous"/>
+                     
+                    <span class="slds-badge slds-badge_lightest"
+                          style="margin-right: 10px;margin-left: 10px;">
+                        Page {!v.currentPageNumber} out of {!v.totalPages}
+                    </span>
+                     
+                    <lightning:button label="Next"
+                                      disabled="{!v.currentPageNumber == v.totalPages}"
+                                      onclick="{!c.handleNext}"
+                                      variant="brand"
+                                      iconName="utility:forward"
+                                      iconPosition="right"
+                                      name="next"/>
+                    <lightning:button label="Last"
+                                      iconName="utility:right"
+                                      iconPosition="right"
+                                      onclick="{!c.onLast}"
+                                      disabled="{!v.currentPageNumber == v.totalPages}" />
+                </div>        
+            </lightning:layout>
+        </p>
+    </div>
+    
+    
+    
+</aura:component>

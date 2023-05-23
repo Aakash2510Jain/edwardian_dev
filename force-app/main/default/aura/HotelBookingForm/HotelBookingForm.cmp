@@ -1,0 +1,18 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" 
+                access="global" controller="EdwardianHotelBooking" >
+      <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	  <aura:attribute name="BookingRec" type="nihrm__BookingContact__c" />
+  <!--  <aura:attribute name="milliseconds" type="Integer" />-->
+    
+ <!--   <aura:attribute name="accesstime" type="time"/>-->
+     <lightning:input   type="text" value="{!v.BookingRec.nihrm__BookingContact__r.Name}" disabled="{!v.isDisabled}" label ="Name"  />
+     <lightning:input   type="text" value="{!v.BookingRec.nihrm__BookingContact__r.Phone}" disabled="{!v.isDisabled}" label ="Phone"  />
+      <lightning:input   type="text" value="{!v.BookingRec.Number_Of_Guests__c}" label ="Number of Guests" />
+      <lightning:input   type="time" value="{!v.BookingRec.Access_For_Setup__c}"   label ="Access For Setup" />
+    
+      <!--  <lightning:input   type="time" value="{!v.BookingRec.Arrival__c}"   label ="Arrival"/>-->
+
+    
+      <lightning:button variant="brand" label="Submit" title="Begins the task"  onclick="{!c.updateBookDetails}"></lightning:button>
+      
+</aura:component>

@@ -1,0 +1,37 @@
+<template>
+    <h3 class="slds-text-heading_medium slds-text-align_left slds-var-p-bottom_small slds-var-p-left_medium">
+        {label.selectGiftAllocationHeading}
+    </h3>
+    <div class="slds-grid slds-wrap slds-var-p-vertical_xxx-small slds-var-p-horizontal_small headingText">
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+            {label.nameHeading}
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+            {label.deliveryStatusHeading}
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+            {label.deliveryDateHeading}
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+            {label.totalItemsHeading}
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+            {label.totalPriceHeading}
+        </div>
+        <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+           
+        </div>
+        <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+           
+        </div>
+    </div>
+    <template for:each={existingGiftAllocations} for:item="existingGiftAllocation">
+        <c-existing-gift-allocation
+            key={existingGiftAllocation.Id}
+            existing-gift-allocation={existingGiftAllocation}
+            oneditgiftallocation={editGiftAllocation}
+            onremovegiftallocation={removeGiftAllocation}
+        ></c-existing-gift-allocation>
+    </template>
+
+</template>

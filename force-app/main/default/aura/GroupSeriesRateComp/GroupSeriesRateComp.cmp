@@ -1,0 +1,53 @@
+<aura:component controller= "GroupSeriesRateCompController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+    
+    <aura:attribute name="tabId" type="string" />
+    <aura:attribute name="selectedProperties" type="List" default=""/>
+    <aura:attribute type="Group_Series_Rates__c[]" name="grpseriesList"/>
+    <aura:attribute name="propertyRec" type="Property_Standard_Price__c"/> 
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="sortBy" type="String"/>
+    <aura:attribute name="sortDirection" type="String"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.fetchgrpSeriesRates}"/>
+    <aura:attribute type="Map" name="groupSeriesMap" />
+    <aura:attribute name="showSpinner" type="boolean" default="true"/>
+    <aura:html tag="style">
+        .slds-p-around–medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+    </aura:html>
+    
+    <div class="modal-header slds-modal__header">
+        <aura:if isTrue="{!v.showSpinner}">
+            <div class="exampleHolder">
+                <lightning:spinner alternativeText="Loading" size="large" />
+            </div> 
+        </aura:if>
+        <div class="slds-clearfix">
+            <lightning:icon iconName='standard:form' class="slds-float_left" alternativeText='form' size='large' title='form'> </lightning:icon>
+            <h1 class="title slds-text-heading–medium" style="margin-right: 83%;">
+                <b>Create Group Series Rates</b></h1>
+            <h4 class="title slds-text-heading–small" style="margin-right: 71%;">
+                Add Group Series Rates records for the Opportunity
+            </h4>
+            
+        </div>
+    </div>
+    
+    <lightning:tabset selectedTabId="1" >
+        <aura:iteration items="{!v.groupSeriesMap}" var="cus" indexVar="index">
+            <lightning:tab label="{!cus.key}" id="{!index}" >
+                <c:AddOrRemoveRow grpserieslist = "{!cus.value}" recordId = "{!v.recordId}" hotelName = "{!cus.key}" propertyRec="{!v.propertyRec}"/>
+            </lightning:tab>
+        </aura:iteration>      
+    </lightning:tabset>
+
+</aura:component>

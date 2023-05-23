@@ -1,0 +1,26 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId" controller="RemoveAllProductsController">
+
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="showForm" type="Boolean" default="false" />
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+    <aura:attribute name="prodList" type="List" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:if isTrue="{!v.showForm}">
+        <div style="text-align: center;">
+            <p style="font-size: 16px;">
+                All opportunity products related to this opportunity will be removed. If you would like to save a copy
+                of this opportunity before deletion, click the "Clone with Related" button.
+            </p>
+
+            <lightning:button variant="destructive" class="slds-button slds-m-top_xx-large" label="Remove all products"
+                onclick="{!c.removeAll}" />
+        </div>
+    </aura:if>
+
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner alternativeText="Loading" size="large" variant="brand" />
+    </aura:if>
+
+</aura:component>

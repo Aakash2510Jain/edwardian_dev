@@ -1,0 +1,185 @@
+<template>
+    <div style="min-height: 600px;" onclick={closeResizeElement}>
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container" title="opportunity">
+                                <div class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                    <lightning-icon icon-name="standard:quotes"></lightning-icon>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate" title="Create Group Series Rates">Create Group Series Rates</span>
+                                      </h1>
+                                </div>
+                            </div>  
+                            <p class="slds-page-header__name-meta">Add Group Series Rates records for the Opportunity {name}</p>      
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+        <div class={adjustHeightForDatePickerClass} style="min-height: 90px;"></div>
+        <div class="slds-box">
+            <div class="slds-form" role="list">
+                <div class="slds-form__row">
+                    <div class="slds-form__item" role="listitem">
+                        <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address slds-is-editing slds-form-element_stacked">
+                            <div class="slds-form-element__control">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-5">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Hotel</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-5">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label">Standard Price For Double/Twin – Single Occupancy</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-5">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label">Standard Price For Double/Twin – Double Occupancy</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-5">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label">Standard Price For Triple Room – 2 Adults + 1 Child (0-12 yrs)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-5">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label">Standard Price For Triple Room – 3 Adults</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <lightning-record-edit-form data-id="lightningForm" object-api-name="Group_Series_Rates__c" onerror={handleError}>
+                <div class="slds-grid slds-p-bottom_small">
+                    <div class="slds-size_1-of-5 slds-p-right_xx-small">
+                        <lightning-input-field required="true" data-id="Hotel__c" field-name="Hotel__c" variant="label-hidden"> </lightning-input-field>
+                    </div>
+                    <div class="slds-size_1-of-5 slds-p-right_xx-small">
+                        <lightning-input-field data-id="Double_Twin_Single_Occupancy__c" field-name="Double_Twin_Single_Occupancy__c" variant="label-hidden"> </lightning-input-field>
+                    </div>
+                    <div class="slds-size_1-of-5 slds-p-right_xx-small">
+                        <lightning-input-field data-id="Double_Twin_Double_Occupancy__c" field-name="Double_Twin_Double_Occupancy__c" variant="label-hidden"> </lightning-input-field>
+                    </div>
+                    <div class="slds-size_1-of-5 slds-p-right_xx-small">
+                        <lightning-input-field data-id="Triple_Room_2_Adults_1_Child__c" field-name="Triple_Room_2_Adults_1_Child__c" variant="label-hidden"> </lightning-input-field>
+                    </div>
+                    <div class="slds-size_1-of-5">
+                        <lightning-input-field data-id="Triple_Room_3_Adults__c" field-name="Triple_Room_3_Adults__c" variant="label-hidden"> </lightning-input-field>
+                    </div>
+                </div>
+            </lightning-record-edit-form>
+
+            <table class="slds-table slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right slds-table_fixed-layout slds-table_resizable-cols">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp slds-text-align_center" title="Tour Code"><abbr class="slds-required" title="required">* </abbr>Tour Code</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp slds-text-align_center" title="Date From"><abbr class="slds-required" title="required">* </abbr>Date From</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp slds-text-align_center" title="Date To"><abbr class="slds-required" title="required">* </abbr>Date To</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp slds-text-align_center" title="Rooms"><abbr class="slds-required" title="required">* </abbr>Rooms</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp" title="Overwrite Standard Price">Overwrite Standard Price</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp" title="Double/Twin – Single Occupancy">Double/Twin – Single Occupancy</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp" title="Double/Twin – Double Occupancy">Double/Twin – Double Occupancy</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp" title="Triple Room – 2 Adults + 1 Child (0-12 yrs)">Triple Room – 2 Adults + 1 Child (0-12 yrs)</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-line-clamp" title="Triple Room – 3 Adults">Triple Room – 3 Adults</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={groupSeriesRatesList} for:item="record" for:index="index">
+                        <tr key={record.key}>
+                            <td>
+                                <lightning-input type="text" default={record.Tour_Code__c} data-field="Tour_Code__c" data-index={index} onchange={handleOnChange}></lightning-input>
+                            </td>
+                            <td>
+                                <div data-index={index} onclick={handleResize}>
+                                    <lightning-input type="date" data-field="Date_From__c" data-index={index} onchange={handleOnChange} onfocusout={handleOnFocusOut}></lightning-input>
+                                </div>
+                            </td>
+                            <td>
+                                <div data-index={index} onclick={handleResize}>
+                                    <lightning-input type="date" data-field="Date_To__c" data-index={index} onchange={handleOnChange} onfocusout={handleOnFocusOut}></lightning-input>
+                                </div>
+                            </td>
+                            <td>
+                                <lightning-input type="text" default={record.Rooms__c} data-field="Rooms__c" data-index={index} onchange={handleOnChange}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="checkbox" checked={record.isOverwrite} data-field="isOverwrite" data-index={index} onchange={handleOnChangeCheckbox}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="number" default={record.Double_Twin_Single_Occupancy__c} data-field="Double_Twin_Single_Occupancy__c" data-index={index} onchange={handleOnChange} disabled="true"></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="number" default={record.Double_Twin_Double_Occupancy__c} data-field="Double_Twin_Double_Occupancy__c" data-index={index} onchange={handleOnChange} disabled="true"></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="number" default={record.Triple_Room_2_Adults_1_Child__c} data-field="Triple_Room_2_Adults_1_Child__c" data-index={index} onchange={handleOnChange} disabled="true"></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="number" default={record.Triple_Room_3_Adults__c} data-field="Triple_Room_3_Adults__c" data-index={index} onchange={handleOnChange} disabled="true"></lightning-input>
+                            </td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-float_right">
+                                <lightning-button variant="brand-outline" label="Add Row" onclick={addRow}></lightning-button>
+                            </div>
+                        </td>        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slds-grid slds-grid_vertical" style="background-color: #f3f3f3;">
+            <div class="slds-col slds-p-top_small slds-p-bottom_small">
+                <lightning-button class="slds-p-left_small" variant="destructive" label="Cancel" onclick={handleCancel}></lightning-button>
+                <div class="slds-float_right">
+                    <lightning-button class="slds-p-right_small" variant="brand" label="Save and New Hotel" onclick={handleSaveAndNew}></lightning-button>
+                    <lightning-button class="slds-p-right_small" variant="brand" label="Save" onclick={handleSave}></lightning-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

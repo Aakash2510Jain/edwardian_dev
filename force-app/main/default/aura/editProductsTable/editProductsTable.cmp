@@ -1,0 +1,285 @@
+<aura:component controller="RateInputProcessController">
+
+    <aura:attribute name="existingProducts" type="List" />
+    <aura:attribute name="opportunity" type="Opportunity" />
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+    <aura:attribute name="isEditMode" type="Boolean" default="false" />
+    <aura:attribute name="datePeriods" type="List" />
+    <aura:attribute name="countRemoved" type="Integer" default="0" />
+
+    <aura:method name="updateProducts" action="{!c.updateProducts}" access="public">
+    </aura:method>
+    <aura:if isTrue="{!v.countRemoved != v.existingProducts.length}">
+        <div class="slds-align_absolute-center slds-size_1-of-1">
+            <lightning:button variant="Brand" class="slds-button slds-align_absolute-center slds-m-vertical_large"
+                label="{!v.isEditMode ? 'View products' : 'Edit existing products'}" onclick="{!c.runEditMode}" />
+        </div>
+        <div class="slds slds-table--header-fixed_container" style=" height: 480px; overflow-x: auto;">
+            
+            <aura:if isTrue="{!v.opportunity.Pricing_Structure__c == 'Seasonal'}">
+                <div class="" style="height:100%; overflow-y: auto; width: fit-content;">
+                    <table class="slds-table slds-table_bordered slds-table--header-fixed">
+                        <thead>
+                            <tr class="">
+                                <th class="slds-text-title--caps slds-cell-fixed" scope="col"
+                                    style="width: 50px; font-size: 11px;">
+                                    <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                        style="padding-top: 9px;">Del</div>
+                                </th>
+                                <th class="slds-text-title--caps slds-cell-fixed" scope="col" style="width: 230px;">
+                                    <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                        style="padding-top: 9px; text-align:center; width: 185px;">Hotel room type</div>
+                                </th>
+                                <th class="slds-text-title--caps slds-cell-fixed" scope="col" style="width: 100px;">
+                                    <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                        style="text-align: center; padding-left: 15px;">
+                                        <p>Day of</p>
+                                        <p>week </p>
+                                    </div>
+                                </th>
+                                <th class="slds-text-title--caps slds-cell-fixed" scope="col"
+                                    style="width: 80px; font-size: 11px;">
+                                    <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                        style="padding-top: 9px;">Occupancy</div>
+                                </th>
+                                <th class="slds-text-title--caps slds-cell-fixed" scope="col"
+                                    style="width: 80px; font-size: 11px;">
+                                    <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                        style="text-align: center; padding-left: 15px;">
+                                        <p>Breakfast</p>
+                                        <p>Incl.</p>
+                                    </div>
+                                </th>
+                                <aura:iteration items="{! v.datePeriods }" var="column">
+                                    <th class="slds-cell-fixed" style="font-size: 11px; min-width:70px;" scope="col"
+                                        data-field="{!column.periodNumber}">
+                                        <div class="slds-truncate slds-cell-fixed slds-m-left_small">
+                                            <p>{!column.startPeriodDateString} - </p>
+                                            <p>{!column.endPeriodDateString} </p>
+                                        </div>
+                                    </th>
+                                </aura:iteration>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <aura:iteration items="{!v.existingProducts}" var="prod" indexVar="ind">
+                                <aura:if isTrue="{!!prod.toRemove}">
+                                    <tr>
+                                        <td scope="row">
+                                            <lightning:buttonIcon aura:id="removeButton" class="" iconName="utility:delete"
+                                                variant="destructive" disabled="false" alternativeText="Remove row"
+                                                title="Remove row" onclick="{!c.removeRow}" name="{!ind}" />
+                                        </td>
+                                        <td scope="row">
+                                            {!prod.productName}
+                                        </td>
+                                        <td scope="row">
+                                            {!prod.daysOfWeek}
+                                        </td>
+                                        <td scope="row">
+                                            1 adult
+                                        </td>
+                                        <td scope="row">
+                                            <lightning:input type="checkbox" variant="label-hidden" name="breakfast" checked="{!prod.prodList[0].Breakfast_Incl__c}" 
+                                            onchange="{!c.changeBreakfast}" disabled="{!!v.isEditMode}" value="{!prod}"/>                                        
+                                        </td>
+                                        <aura:iteration items="{!prod.prodList}" var="oneProd">
+                                            <td scope="row" style="min-width:70px;">
+                                                <aura:if isTrue="{!v.isEditMode}">
+                                                    <lightning:input type="number" variant="label-hidden" class="inputCurr"
+                                                        value="{!oneProd.X1_Adult_Price__c}" formatter="currency" step="1"
+                                                        min="0" />
+                                                    <aura:set attribute="else">
+                                                        <div class="slds-truncate" title="{!oneProd.X1_Adult_Price__c}"
+                                                            style="min-width: 90px;">
+                                                            <lightning:formattedNumber value="{!oneProd.X1_Adult_Price__c}"
+                                                                style="currency" currencyCode="GBP" />
+                                                        </div>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </td>
+                                        </aura:iteration>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">
+                                            <lightning:buttonIcon class="" iconName="utility:delete" variant="destructive"
+                                                disabled="false" alternativeText="Remove row" title="Remove row"
+                                                onclick="{!c.removeRow}" name="{!ind}" />
+                                        </td>
+                                        <td scope="row">
+                                            {!prod.productName}
+                                        </td>
+                                        <td scope="row">
+                                            {!prod.daysOfWeek}
+                                        </td>
+                                        <td scope="row">
+                                            2 adult
+                                        </td>
+                                        <td scope="row">
+                                            <lightning:input type="checkbox" variant="label-hidden" name="breakfast" checked="{!prod.prodList[0].Breakfast_Incl__c}" 
+                                            onchange="{!c.changeBreakfast}" disabled="{!!v.isEditMode}" value="{!prod}"/>
+                                        </td>
+                                        <aura:iteration items="{!prod.prodList}" var="oneProd">
+                                            <td scope="row" style="min-width:70px;">
+                                                <aura:if isTrue="{!v.isEditMode}">
+                                                    <lightning:input type="number" variant="label-hidden" class="inputCurr"
+                                                        value="{!oneProd.X2_Adult_Price__c}" formatter="currency"
+                                                        step="1" min="0" />
+                                                    <aura:set attribute="else">
+                                                        <div class="slds-truncate" title="{!oneProd.X2_Adult_Price__c}"
+                                                            style="min-width: 90px;">
+                                                            <lightning:formattedNumber
+                                                                value="{!oneProd.X2_Adult_Price__c}" style="currency"
+                                                                currencyCode="GBP" />
+                                                        </div>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </td>
+                                        </aura:iteration>
+                                    </tr>
+                                </aura:if>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+                <aura:set attribute="else">
+                    <div class="" style="height:100%; overflow-y: auto; width: auto; ">
+                        <table class="slds-table slds-table_bordered slds-table--header-fixed">
+                            <thead>
+                                <tr class="">
+                                    <th class="slds-text-title--caps slds-cell-fixed" scope="col"
+                                        style="width: 50px; font-size: 11px;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                            style="padding-left: 15px; margin-left: 10px;">Del</div>
+                                    </th>
+                                    <th class="slds-text-title--caps slds-cell-fixed" scope="col" style="width: 200px;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                            style="padding-left: 15px; text-align:center; width: 185px;">Hotel &amp; Room Type</div>
+                                    </th>
+                                    <th class="slds-text-title--caps slds-cell-fixed" scope="col" style="width: 100px;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                            style="text-align: center; padding-left: 15px;">
+                                            <p>Date Range</p>
+                                        </div>
+                                    </th>
+                                    <th class="slds-text-title--caps slds-cell-fixed" scope="col"
+                                        style="width: 80px; font-size: 11px;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                         style="text-align: center; padding-left: 15px;">
+                                            <p>Breakfast</p>
+                                            <p>Incl.</p>
+                                        </div>
+                                    </th>
+                                    <th class="slds-text-title--caps slds-cell-fixed" scope="col" style="width: 100px;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                            style="text-align: center; padding-left: 15px;">
+                                            <p>1 adults</p>
+                                        </div>
+                                    </th>
+                                    <th class="slds-text-title--caps slds-cell-fixed" scope="col" style="width: 100px;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                            style="text-align: center; padding-left: 15px;">
+                                            <p>2 adults</p>
+                                        </div>
+                                    </th>
+                                    <th class="slds-text-title--caps slds-cell-fixed" scope="col" style="width: 100px;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Hotel room type and pax"
+                                            style="text-align: center; padding-left: 15px;">
+                                            <p>Comments</p>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+        
+                            <tbody>
+                                <aura:iteration items="{!v.existingProducts}" var="prod" indexVar="ind">
+                                    <aura:if isTrue="{!!prod.toRemove}">
+                                        <aura:iteration items="{!prod.prodList}" var="prodItem" indexVar="indProd">
+                                            <tr>
+                                                <td scope="row">
+                                                    <lightning:buttonIcon class="" iconName="utility:delete" variant="destructive"
+                                                        disabled="false" alternativeText="Remove row" title="Remove row"
+                                                        onclick="{!c.removeRow}" name="{!ind}" />
+                                                </td>
+                                                <td scope="row">
+                                                    {!prodItem.Product2.Name}
+                                                </td>
+                                                <td scope="row">
+                                                    <aura:if isTrue="{!prodItem.From_Date__c != null}">
+                                                        <lightning:formattedDateTime value="{!prodItem.From_Date__c}"/> - <lightning:formattedDateTime value="{!prodItem.To_Date__c}"/>
+                                                    </aura:if>
+                                                </td>
+                                                <td scope="row">
+                                                    <aura:if isTrue="{!v.isEditMode}">
+                                                        <lightning:input type="checkbox" variant="label-hidden" name="breakfast" checked="{!prodItem.Breakfast_Incl__c}"/>
+                                                        <aura:set attribute="else">
+                                                            <aura:if isTrue="{!and(prodItem.From_Date__c != null, prodItem.To_Date__c != null) }">
+                                                                <lightning:input type="checkbox" variant="label-hidden" name="breakfast" checked="{!prodItem.Breakfast_Incl__c}" disabled="{!!v.isEditMode}"/>
+                                                            </aura:if>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>
+                                                <td scope="row">
+                                                    <aura:if isTrue="{!v.isEditMode}">
+                                                        <lightning:input type="number" variant="label-hidden" class="inputCurr"
+                                                            value="{!prodItem.X1_Adult_Price__c}" formatter="currency" step="1"
+                                                            min="0" />
+                                                        <aura:set attribute="else">
+                                                            <aura:if isTrue="{!and(prodItem.From_Date__c != null, prodItem.To_Date__c != null) }">
+                                                                <div class="slds-truncate" title="{!prodItem.X1_Adult_Price__c}" style="min-width: 90px;">
+                                                                    <lightning:formattedNumber value="{!prodItem.X1_Adult_Price__c}" style="currency" currencyCode="GBP" />
+                                                                </div>
+                                                            </aura:if>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>
+                                                <td scope="row">
+                                                    <aura:if isTrue="{!v.isEditMode}">
+                                                        <lightning:input type="number" variant="label-hidden" class="inputCurr" formatter="currency" step="1" min="0"
+                                                            value="{!prodItem.X2_Adult_Price__c}" />
+                                                        <aura:set attribute="else">
+                                                            <aura:if isTrue="{!and(prodItem.From_Date__c != null, prodItem.To_Date__c != null) }">
+                                                                <div class="slds-truncate" title="{!prodItem.X2_Adult_Price__c}" style="min-width: 90px;">
+                                                                    <lightning:formattedNumber value="{!prodItem.X2_Adult_Price__c}" style="currency" currencyCode="GBP" />
+                                                                </div>
+                                                            </aura:if>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>
+                                                <td scope="row">
+                                                    <aura:if isTrue="{!v.isEditMode}">
+                                                        <lightning:input type="text" variant="label-hidden" class="comments" value="{!prod.comments}" />
+                                                        <aura:set attribute="else">
+                                                            <div class="slds-truncate" title="{!prod.Description}" style="min-width: 90px;">
+                                                                {!prod.Description}
+                                                            </div>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </aura:if>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+        <aura:set attribute="else">
+            <p style="font-size: 15pt; text-align: center;">
+                You removed all existing products. Data will be update after clicking "Save".
+            </p>
+            <div class="slds-align_absolute-center slds-size_1-of-1">
+                <lightning:button variant="neutral" class="slds-button slds-align_absolute-center slds-m-vertical_large"
+                    label="Cancel all deletions" onclick="{!c.cancelDeletions}" />
+            </div>
+        </aura:set>
+    </aura:if>
+
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner alternativeText="Loading" size="large" variant="brand" />
+    </aura:if>
+
+</aura:component>

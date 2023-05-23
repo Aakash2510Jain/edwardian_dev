@@ -1,0 +1,98 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId"
+    controller="LeasureInputRatesController">
+
+    <aura:attribute name="flowStage" type="Integer" default="-1" />
+    <aura:attribute name="selectedPricebookId" type="String" />
+    <aura:attribute name="headerLabel" type="String" default="Select Price Book" />
+    <aura:attribute name="optionsFamily" type="List" />
+    <aura:attribute name="opportunity" type="Opportunity" />
+    <aura:attribute name="datePeriods" type="List" />
+    <aura:attribute name="allProducts" type="List" />
+    <aura:attribute name="supplementsMap" type="Object" />
+    <aura:attribute name="existingProducts" type="List" />
+    <aura:attribute name="listExistingId" type="List" />
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0" />
+
+
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:if isTrue="{!v.flowStage ge 0}">
+        <div>
+            <!-- <!–Header–> -->
+            <div class="modal-header slds-modal__header slds-size_1-of-1">
+                <h2 style="font-size: 16pt;">{!v.headerLabel}</h2>
+            </div>
+            <div class="slds-p-around–x-small slds-size_1-of-1" style="width: 80vw;">
+                <aura:if isTrue="{!v.flowStage == 0}">
+                    <c:leisurePricebookSelection selectedValue="{!v.selectedPricebookId}" />
+                </aura:if>
+
+                <aura:if isTrue="{!v.flowStage == 1}">
+                    <c:leisureEditProductsTable existingProducts="{!v.existingProducts}" opportunity="{!v.opportunity}" />
+                </aura:if>
+
+                <aura:if isTrue="{!v.flowStage == 2}">
+                    <c:leisureProductSelection selectedRowsCount="{!v.selectedRowsCount}"
+                        listExistingId="{!v.listExistingId}" selectedPricebookId="{!v.selectedPricebookId}"
+                        opportunity="{!v.opportunity}" optionsFamily="{!v.optionsFamily}"
+                        allProducts="{!v.allProducts}" supplementsMap="{!v.supplementsMap}"/>
+                </aura:if>
+
+                <aura:if isTrue="{!v.flowStage == 3}">
+                    <c:leisureRatesSelection aura:id="rateSelection" opportunity="{!v.opportunity}"
+                        selectedPricebookId="{!v.selectedPricebookId}" allProducts="{!v.allProducts}"
+                        datePeriods="{!v.datePeriods}" supplementsMap="{!v.supplementsMap}"/>
+                </aura:if>
+            </div>
+
+            <!-- <!–Footer–> -->
+            <footer>
+
+                <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+                    <aura:if isTrue="{!v.flowStage eq 1}">
+                        <lightning:button name="SaveAndClose" variant="Brand" class="slds-button" label="Save and close"
+                            onclick="{!c.handleNext}" />
+                    </aura:if>
+                    <lightning:button name="SaveAndNext" variant="Brand" class="slds-button"
+                        label="{!v.flowStage eq 3 ? 'Save' : v.flowStage eq 1 ? 'Save and add products':'Next'}"
+                        onclick="{!c.handleNext}" />
+
+                    <lightning:button variant="Neutral" class="slds-button" label="Cancel" onclick="{!c.handleExit}" />
+                </div>
+            </footer>
+
+        </div>
+
+    </aura:if>
+
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner alternativeText="Loading" size="large" variant="brand" />
+    </aura:if>
+    <aura:html tag="style">
+        .slds-modal__container{
+            width: 80%;
+            max-width: 100rem;
+        }
+        .modal-body{
+            height : 400px !important;
+            max-height: 550px !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }
+        
+        .slds-modal__content {
+            overflow-y:hidden !important;
+            height:unset !important;
+            max-height:unset !important;
+        }
+        
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+
+    </aura:html>
+</aura:component>

@@ -1,0 +1,35 @@
+<template>
+    <template if:true={showSelectedGifts}>
+        <div class="slds-var-p-bottom_large">
+            <h3 class="slds-text-heading_medium slds-text-align_left slds-var-p-bottom_small">
+                {label.selectedGiftsHeading}
+            </h3>
+            <div class="slds-grid slds-wrap slds-var-p-vertical_xxx-small slds-var-p-horizontal_small headingText">
+                <div class="slds-col slds-size_4-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                    {label.nameHeading}
+                </div>
+                <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center">
+                    {label.priceHeading}
+                </div>
+                <div class="slds-col slds-size_2-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-text-align_center">
+                    {label.quantityHeading}
+                </div>
+                <div class="slds-col slds-size_3-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-text-align_center">
+                    {label.statusHeading}
+                </div>
+                <div class="slds-col slds-size_1-of-12 slds-var-p-horizontal_xx-small slds-align-content-center slds-text-align_center">
+                    {label.removeHeading}
+                </div>
+            </div>
+            <template for:each={selectedGifts} for:item="selectedGift">
+                <c-vip-gift-allocation-line-item
+                    key={selectedGift.value.gift.Id}
+                    selected-gift={selectedGift.value}
+                    onremovegift={removeGift}
+                    onchangequantity={changeQuantity}
+                    onchangestatus={changeStatus}
+                ></c-vip-gift-allocation-line-item>
+            </template>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,13 @@
+.THIS .displayNone {
+    display:none;
+}
+
+.THIS .filterIcon {
+    float: right; 
+    margin-right:4px;
+}
+
+.THIS .filterArea {
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin-left: 2px;
+}

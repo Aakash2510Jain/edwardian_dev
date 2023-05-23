@@ -1,0 +1,38 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	 <div class="c-container" >
+         <lightning:layout class="abc" >
+             <lightning:layoutItem class="abc " size="3" padding="around-large"  >
+                  <div class="slds-align_absolute-left">Shubham1</div>
+             </lightning:layoutItem>
+             <lightning:layoutItem class="abc" size="3" padding="around-large"  >
+                  <div class="slds-align_absolute-center">Shubham2</div>
+             </lightning:layoutItem>
+             <lightning:layoutItem  class="abc" size="3" padding="around-large" >
+                  <div class="slds-text-align_right">Shubham3</div>
+             </lightning:layoutItem>
+             <lightning:layoutItem class="abc"  size="3" padding="around-large" >
+                  <div class="slds-align_absolute-left">Shubham4</div>
+             </lightning:layoutItem>
+             
+         </lightning:layout>
+         <br/>
+         <lightning:layout class="abc" horizontalAlign="center">
+             <lightning:layoutItem class="e" size="12" padding="around-large">
+                  <div class="slds-align_absolute-center">Shubham1</div>
+             </lightning:layoutItem>
+         </lightning:layout>
+         <br/>
+         <lightning:layout class="abc" horizontalAlign="center">
+             <lightning:layoutItem class="abc" size="4" padding="around-large">
+                  <div class="slds-align_absolute-top">Shubham1</div>
+             </lightning:layoutItem>
+             <lightning:layoutItem class="abc" size="4" padding="around-large">
+                  <div class="slds-align_absolute-right">Shubham1</div>
+             </lightning:layoutItem>
+             <lightning:layoutItem class="abc" size="4" padding="around-large">
+                  <div class="slds-align_absolute-bottom">Shubham1</div>
+             </lightning:layoutItem>
+         </lightning:layout>
+        
+            </div>
+</aura:component>

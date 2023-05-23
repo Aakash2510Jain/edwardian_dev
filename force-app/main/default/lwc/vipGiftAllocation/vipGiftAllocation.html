@@ -1,0 +1,70 @@
+<template>
+    <lightning-card>
+        <h3 class="slds-text-heading_large slds-text-align_center slds-var-p-bottom_small">
+            {label.allocateVipGiftsHeading}
+        </h3>
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="medium"> </lightning-spinner>
+        </template>
+        <template if:true={errorDetected}>
+            <p>{errorMessageDisplayed}</p>
+        </template>
+        <template if:false={errorDetected}>
+            <template if:false={giftAllocationSelected}>
+                <div class="slds-var-p-horizontal_x-small">
+                    <c-select-existing-gift-allocation
+                        existing-gift-allocations={existingGiftAllocations}
+                        oneditgiftallocation={editGiftAllocation}
+                        onremovegiftallocation={removeGiftAllocation}
+                    ></c-select-existing-gift-allocation>
+                </div>
+                <footer class="slds-card__footer">
+                    <div class="slds-text-align_center">
+                        <template if:false={fullView}>
+                            <button class="slds-button slds-button_neutral" onclick={closeQuickAction}>{label.cancelButton}</button>
+                        </template>
+                        <button class="slds-button slds-button_brand" onclick={createNew}>{label.newButton}</button>
+                    </div>
+                </footer>
+            </template>
+            <template if:true={giftAllocationSelected}>
+                <div class="slds-var-p-horizontal_x-small">
+                    <c-booking-details
+                        record-id={recordId}
+                        guest-name={guestName}
+                        room-number={roomNumber}
+                        arrival-date={arrivalDate}
+                        status={deliveryStatus}
+                        total-price={totalPrice}
+                        delivery-date={deliveryDate}
+                        departure-date={departureDate}
+                        onchangedeliverydate={changeDeliveryDate}
+                    ></c-booking-details>
+                    <c-vip-gift-allocation-entry
+                        show-selected-gifts={showSelectedGifts}
+                        selected-gifts={selectedGifts}
+                        onremovegift={removeGift}
+                        onchangequantity={changeQuantity}
+                        onchangestatus={changeStatus}
+                    ></c-vip-gift-allocation-entry>
+                    <c-always-allocated-gifts
+                        show-always-allocated-gifts={showAlwaysAllocatedGifts}
+                        selected-always-allocated-gifts={selectedAlwaysAllocatedGifts}
+                        onremovealwaysallocatedgift={removeAlwaysAllocatedGift}
+                        onchangealwaysallocatedquantity={changeAlwaysAllocatedQuantity}
+                    ></c-always-allocated-gifts>
+                    <c-available-gifts
+                        gifts-by-grade={giftsByGrade}
+                        onselectedgift={addGift}
+                    ></c-available-gifts>
+                </div>
+                <footer class="slds-card__footer">
+                    <div class="slds-text-align_center">
+                        <button class="slds-button slds-button_neutral" onclick={closeQuickAction}>{label.cancelButton}</button>
+                        <button class="slds-button slds-button_brand" onclick={save}>{label.saveButton}</button>
+                    </div>
+                </footer>
+            </template>
+        </template>
+    </lightning-card>
+</template>

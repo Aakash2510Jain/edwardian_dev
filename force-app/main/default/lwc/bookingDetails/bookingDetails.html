@@ -1,0 +1,22 @@
+<template>
+    <div class="slds-grid slds-wrap slds-var-p-around_medium slds-grid_align-center slds-var-m-horizontal_xx-large slds-var-m-bottom_small" style="margin-left: 4.5rem; margin-right: 4.5rem;">
+        <div class="slds-col slds-size_1-of-2 slds-var-p-horizontal_xx-small">
+            <lightning-input type="text" name="guestName" label={label.guestNameHeading} value={guestName} readonly></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-var-p-horizontal_xx-small">
+            <lightning-input type="text" name="roomNumber" label={label.roomNumberHeading} value={roomNumber} readonly></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-var-p-horizontal_xx-small">
+            <lightning-input type="date" name="arrivalDate" label={label.arrivalDateHeading} value={arrivalDate} readonly></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-var-p-horizontal_xx-small">
+            <lightning-input type="text" name="status" value={status} label={label.statusHeading} readonly></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-var-p-horizontal_xx-small">
+            <lightning-input type="number" name="totalPrice" value={totalPrice} formatter="currency" label={label.totalPriceHeading} readonly></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-var-p-horizontal_xx-small">
+            <lightning-input type="date" name="deliveryDate" value={deliveryDate} onchange={changeDeliveryDate} label={label.deliveryDateHeading} min={arrivalDate} max={departureDate}></lightning-input>
+        </div>
+    </div>
+</template>

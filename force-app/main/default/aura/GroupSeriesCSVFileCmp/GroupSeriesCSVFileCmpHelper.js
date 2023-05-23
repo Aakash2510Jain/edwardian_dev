@@ -1,0 +1,44 @@
+({
+	convertArrayToCSV : function(component,metaDataRecord){
+        debugger;
+        // declare variables
+        var csvStringResult, counter, keys, columnDivider, lineDivider;
+
+        // store ,[comma] in columnDivider variabel for sparate CSV values and 
+        // for start next line use '\n' [new line] in lineDivider varaible  
+        columnDivider = ',';
+        lineDivider =  '\n';
+
+        // in the keys valirable store fields API Names as a key 
+        // this labels use in CSV file header  
+        keys = ['Hotel Name','Tour Code','Date From','Date To','Rooms','Room Type','Is Breakfast Included?','Overwrite Standard Price',
+                'Double/Twin Single Occupancy','Double/Twin Double Occupancy','Triple Room 2 Adults + 1 Child(0-12 yrs)','Triple Room 3 Adults'];
+        
+        csvStringResult = '';
+        csvStringResult += keys.join(columnDivider);
+        csvStringResult += lineDivider;
+
+        /*for(var i=0; i <= metaDataRecord.length; i++){   
+            counter = 0;
+           
+             for(var sTempkey in keys) {
+                var skey = keys[sTempkey] ;  
+
+              // add , [comma] after every String value,. [except first]
+                  if(counter >= 0){ 
+                      csvStringResult += columnDivider; 
+                   }   
+               
+               csvStringResult += '"'+ metaDataRecord[i][skey]+'"'; 
+               
+               counter++;
+
+            } // inner for loop close 
+             csvStringResult += lineDivider;
+          }// outer main for loop close */
+       
+       // return the CSV formate String 
+        return csvStringResult;        
+
+	}
+})
